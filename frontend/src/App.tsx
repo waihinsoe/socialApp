@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import "./App.css";
+import Layout from "./components/Layout";
 
 function App() {
   const [file, setFile] = useState<File>();
@@ -16,6 +17,7 @@ function App() {
       method: "POST",
       body: formData,
     });
+
     if (response.ok) {
       const result = await response.json();
       const imgUrl = result.data;
@@ -23,13 +25,13 @@ function App() {
     }
   };
   return (
-    <div>
+    <Layout>
       <input type="file" onChange={handleFileChange} />
       <button onClick={imageUpload}>send</button>
       <div>
         <img src={image} alt="" />
       </div>
-    </div>
+    </Layout>
   );
 }
 
