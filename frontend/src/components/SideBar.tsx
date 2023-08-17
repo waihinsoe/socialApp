@@ -54,7 +54,13 @@ const SideBar = () => {
             key={item.id}
           >
             {item.icon}
-            <Typography>{item.label}</Typography>
+            <Typography
+              sx={{
+                userSelect: "none",
+              }}
+            >
+              {item.label}
+            </Typography>
           </Box>
         );
       })}
