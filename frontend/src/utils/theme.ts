@@ -17,19 +17,27 @@ export const getDesignTokens = (mode: PaletteMode) => ({
           success: {
             main: "#377dff",
           },
+          textColor: {
+            primary: "#4e5d78",
+            secondary: "#FFF",
+          },
         }
       : {
           primary: {
             main: "#191c21",
           },
           secondary: {
-            main: "#FFE194",
+            main: "#212833",
           },
           info: {
-            main: "#E8F6EF",
+            main: "#4e5d78",
           },
           success: {
-            main: "#1B9C85",
+            main: "#377dff",
+          },
+          textColor: {
+            primary: "#eeeff2",
+            secondary: "#FFF",
           },
         }),
   },

@@ -8,7 +8,7 @@ interface ColorModeContextType {
 }
 
 const defaultContext: ColorModeContextType = {
-  mode: "light",
+  mode: (localStorage.getItem("darkmodeTheme") as PaletteMode) || "light",
   updateData: () => {},
 };
 
