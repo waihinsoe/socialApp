@@ -7,20 +7,48 @@ import TravelExploreOutlinedIcon from "@mui/icons-material/TravelExploreOutlined
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import SettingsSuggestOutlinedIcon from "@mui/icons-material/SettingsSuggestOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 const sideBarItems = [
-  { id: 1, label: "Feed", icon: <GridViewIcon /> },
-  { id: 2, label: "My community", icon: <PeopleAltOutlinedIcon /> },
-  { id: 3, label: "Messages", icon: <ForumOutlinedIcon /> },
-  { id: 4, label: "Notification", icon: <NotificationsOutlinedIcon /> },
-  { id: 5, label: "Explore", icon: <TravelExploreOutlinedIcon /> },
-  { id: 6, label: "Profile", icon: <PermIdentityOutlinedIcon /> },
-  { id: 7, label: "Settings", icon: <SettingsSuggestOutlinedIcon /> },
-  { id: 8, label: "Logout", icon: <LogoutOutlinedIcon /> },
+  { id: 1, label: "Feed", icon: <GridViewIcon />, route: "/" },
+  {
+    id: 2,
+    label: "My community",
+    icon: <PeopleAltOutlinedIcon />,
+    route: "/community",
+  },
+  { id: 3, label: "Messages", icon: <ForumOutlinedIcon />, route: "/messages" },
+  {
+    id: 4,
+    label: "Notification",
+    icon: <NotificationsOutlinedIcon />,
+    route: "/notification",
+  },
+  {
+    id: 5,
+    label: "Explore",
+    icon: <TravelExploreOutlinedIcon />,
+    route: "/explore",
+  },
+  {
+    id: 6,
+    label: "Profile",
+    icon: <PermIdentityOutlinedIcon />,
+    route: "/profile",
+  },
+  {
+    id: 7,
+    label: "Settings",
+    icon: <SettingsSuggestOutlinedIcon />,
+    route: "/settings",
+  },
+  { id: 8, label: "Logout", icon: <LogoutOutlinedIcon />, route: "/logout" },
 ];
 
 const SideBar = () => {
-  const [selected, setSelected] = useState<Number>(1);
+  const location = useLocation();
+  const routeName = location.pathname;
+
   return (
     <Box
       sx={{
@@ -35,33 +63,37 @@ const SideBar = () => {
     >
       {sideBarItems.map((item) => {
         return (
-          <Box
-            onClick={() => setSelected(item.id)}
-            sx={{
-              display: "flex",
-              gap: 2,
-              p: 2,
-              cursor: "pointer",
-              borderRadius: 4,
-              backgroundColor:
-                selected === item.id ? "info.main" : "primary.main",
-              color:
-                selected === item.id
-                  ? "textColor.secondary"
-                  : "textColor.primary",
-              transition: selected === item.id ? "all 0.3s" : "",
-            }}
+          <Link
+            to={item.route}
             key={item.id}
+            style={{ textDecoration: "none" }}
           >
-            {item.icon}
-            <Typography
+            <Box
               sx={{
-                userSelect: "none",
+                display: "flex",
+                gap: 2,
+                p: 2,
+                cursor: "pointer",
+                borderRadius: 4,
+                backgroundColor:
+                  routeName === item.route ? "info.main" : "primary.main",
+                color:
+                  routeName === item.route
+                    ? "textColor.secondary"
+                    : "textColor.primary",
+                transition: routeName === item.route ? "all 0.3s" : "",
               }}
             >
-              {item.label}
-            </Typography>
-          </Box>
+              {item.icon}
+              <Typography
+                sx={{
+                  userSelect: "none",
+                }}
+              >
+                {item.label}
+              </Typography>
+            </Box>
+          </Link>
         );
       })}
     </Box>

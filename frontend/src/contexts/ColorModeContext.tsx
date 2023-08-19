@@ -1,5 +1,5 @@
 import { PaletteMode, ThemeProvider, createTheme } from "@mui/material";
-import { ReactNode, createContext, useState } from "react";
+import { ReactNode, createContext, useMemo, useState } from "react";
 import { getDesignTokens } from "../utils/theme";
 
 interface ColorModeContextType {
@@ -22,8 +22,10 @@ interface Props {
 export const ColorModeProvider = ({ children }: Props) => {
   const [data, updateData] = useState(defaultContext);
 
-  const theme = () => createTheme(getDesignTokens(data.mode));
-
+  const theme = useMemo(
+    () => createTheme(getDesignTokens(data.mode)),
+    [data.mode]
+  );
   return (
     <ColorModeContext.Provider value={{ ...data, updateData }}>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
