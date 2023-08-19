@@ -1,7 +1,12 @@
 import { Box } from "@mui/material";
+import Layout from "../Layout";
 
 const Profile = () => {
-  return <Box>This is profile page.</Box>;
+  return (
+    <Layout>
+      <Box>This is profile page.</Box>
+    </Layout>
+  );
 };
 
 export default Profile;

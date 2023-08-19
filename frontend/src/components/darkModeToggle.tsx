@@ -68,8 +68,7 @@ const DarkModeToggle = () => {
         control={
           <MaterialUISwitch
             sx={{ m: 1 }}
-            defaultChecked
-            checked={mode === "light"}
+            checked={mode === "light" ? true : false}
           />
         }
         label={undefined}
