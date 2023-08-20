@@ -7,7 +7,6 @@ import TravelExploreOutlinedIcon from "@mui/icons-material/TravelExploreOutlined
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import SettingsSuggestOutlinedIcon from "@mui/icons-material/SettingsSuggestOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 const sideBarItems = [
   { id: 1, label: "Feed", icon: <GridViewIcon />, route: "/" },
