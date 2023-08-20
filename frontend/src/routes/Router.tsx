@@ -7,6 +7,8 @@ import Explore from "../components/explore";
 import Profile from "../components/profile";
 import Settings from "../components/settings";
 import Logout from "../components/auth/Logout";
+import Login from "../components/auth/Login";
+import Register from "../components/auth/Register";
 
 const Router = () => {
   return (
@@ -19,6 +21,8 @@ const Router = () => {
         <Route path="/explore" element={<Explore />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/logout" element={<Logout />} />
       </Routes>
     </BrowserRouter>
