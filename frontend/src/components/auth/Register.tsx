@@ -34,6 +34,7 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
+    imgUrl: "",
   });
 
   const shouldDisable = !userInfo.name || !userInfo.email || !userInfo.password;
@@ -47,20 +48,22 @@ const Register = () => {
   };
 
   const createAccount = async () => {
-    const imgData = preview.split(",")[1]; // Assuming `preview` contains the base64 image data
-    const imgBlob = new Blob(
-      [Uint8Array.from(atob(imgData), (char) => char.charCodeAt(0))],
-      { type: "image/jpeg" }
-    );
-    const formData = new FormData();
-    formData.append("file", imgBlob);
-    const response = await fetch("http://localhost:5000/assets", {
-      method: "POST",
-      body: formData,
-    });
-    if (response.ok) {
-      const result = await response.json();
-      console.log(result);
+    if (preview.length) {
+      const imgData = preview.split(",")[1]; // Assuming `preview` contains the base64 image data
+      const imgBlob = new Blob(
+        [Uint8Array.from(atob(imgData), (char) => char.charCodeAt(0))],
+        { type: "image/jpeg" }
+      );
+      const formData = new FormData();
+      formData.append("file", imgBlob);
+      const response = await fetch("http://localhost:5000/assets", {
+        method: "POST",
+        body: formData,
+      });
+      if (response.ok) {
+        const result = await response.json();
+        setUserInfo({ ...userInfo, imgUrl: result.data });
+      }
     }
   };
   return (

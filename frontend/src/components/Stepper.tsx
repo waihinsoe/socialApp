@@ -69,7 +69,7 @@ export default function TextMobileStepper() {
             fullWidth
           />
         )}
-        {activeStep === 3 && <UploadAvatar setPreview={setPreview} />}
+        {activeStep === 3 && <UploadAvatar setPreview={preview} />}
       </Box>
       <MobileStepper
         sx={{ backgroundColor: "warning.main", color: "#fff" }}
