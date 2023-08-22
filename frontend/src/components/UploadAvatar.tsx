@@ -12,7 +12,7 @@ const UploadAvatar = ({ setPreview }: Props) => {
     setPreview(view);
   };
   return (
-    <Box>
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Avatar
         width={200}
         height={200}

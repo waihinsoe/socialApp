@@ -2,14 +2,20 @@ import {
   Avatar,
   Box,
   Button,
+  MobileStepper,
+  Paper,
   TextField,
   ThemeProvider,
   Typography,
   createTheme,
+  useTheme,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import UploadAvatar from "../UploadAvatar";
 import { useState } from "react";
+import TextMobileStepper from "../Stepper";
+import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
+import React from "react";
 
 const customTheme = createTheme({
   palette: {
@@ -20,10 +26,34 @@ const customTheme = createTheme({
 });
 
 const Register = () => {
+  const theme = useTheme();
+  const [activeStep, setActiveStep] = React.useState(0);
+  const maxSteps = 4;
   const [preview, setPreview] = useState("");
-  const uploadPhoto = async () => {
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const shouldDisable = !userInfo.name || !userInfo.email || !userInfo.password;
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const createAccount = async () => {
+    const imgData = preview.split(",")[1]; // Assuming `preview` contains the base64 image data
+    const imgBlob = new Blob(
+      [Uint8Array.from(atob(imgData), (char) => char.charCodeAt(0))],
+      { type: "image/jpeg" }
+    );
     const formData = new FormData();
-    formData.append("file", preview);
+    formData.append("file", imgBlob);
     const response = await fetch("http://localhost:5000/assets", {
       method: "POST",
       body: formData,
@@ -33,65 +63,152 @@ const Register = () => {
       console.log(result);
     }
   };
-  console.log(preview);
   return (
     <ThemeProvider theme={customTheme}>
       <Box
         sx={{
-          width: "100%",
+          maxWidth: 500,
+          flexGrow: 1,
+          margin: "0 auto",
           height: "100vh",
-          p: 1,
           display: "flex",
-          justifyContent: "space-evenly",
-          alignItems: "center",
+          flexDirection: "column",
+          border: "1px solid #191c21",
         }}
       >
-        <UploadAvatar setPreview={setPreview} />
-        <Box
+        <Paper
+          square
+          elevation={0}
           sx={{
             display: "flex",
-            flexDirection: "column",
-            maxWidth: 400,
-            gap: 2,
-            p: 2,
-            position: "relative",
+            alignItems: "center",
+            height: 50,
+            pl: 2,
+            backgroundColor: "warning.main",
+            color: "#fff",
           }}
         >
-          <Avatar
-            src={preview}
-            sx={{ width: 100, height: 100, margin: "0 auto" }}
-          />
-          <TextField id="name" label="name" variant="filled" color="warning" />
-          <TextField
-            id="email"
-            label="Email"
-            variant="filled"
-            color="warning"
-          />
-          <TextField
-            id="password"
-            label="Password"
-            variant="filled"
-            color="warning"
-          />
-
-          <Button variant="contained" color="warning" onClick={uploadPhoto}>
-            Register
-          </Button>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 1,
-            }}
-          >
-            <Typography>If you already have an account,</Typography>
-            <Link to="/login">
-              <Typography sx={{ fontWeight: "bold" }}>Login here</Typography>
-            </Link>
-          </Box>
+          <Typography sx={{ margin: "0 auto" }}>SOCIAL APP</Typography>
+        </Paper>
+        <Box
+          sx={{
+            height: 255,
+            maxWidth: 500,
+            width: "100%",
+            p: 2,
+            flexGrow: { xs: 1 },
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          {activeStep === 0 && (
+            <TextField
+              id="name"
+              label="Enter your name"
+              variant="outlined"
+              color="warning"
+              fullWidth
+              onChange={(evt) =>
+                setUserInfo({ ...userInfo, name: evt.target.value })
+              }
+              value={userInfo.name}
+            />
+          )}
+          {activeStep === 1 && (
+            <TextField
+              id="email"
+              label="Enter your email"
+              variant="outlined"
+              color="warning"
+              fullWidth
+              onChange={(evt) =>
+                setUserInfo({ ...userInfo, email: evt.target.value })
+              }
+              value={userInfo.email}
+            />
+          )}
+          {activeStep === 2 && (
+            <TextField
+              id="password"
+              label="Enter your password"
+              variant="outlined"
+              color="warning"
+              fullWidth
+              onChange={(evt) =>
+                setUserInfo({ ...userInfo, password: evt.target.value })
+              }
+              value={userInfo.password}
+            />
+          )}
+          {activeStep === 3 && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                height: "100%",
+                width: "100%",
+              }}
+            >
+              <Avatar
+                src={preview}
+                sx={{ width: 150, height: 150, margin: "0 auto" }}
+              />
+              <UploadAvatar setPreview={setPreview} />
+            </Box>
+          )}
         </Box>
+        <MobileStepper
+          sx={{
+            backgroundColor: "warning.main",
+            color: "#fff",
+            userSelect: "none",
+          }}
+          variant="text"
+          steps={maxSteps}
+          position="static"
+          activeStep={activeStep}
+          nextButton={
+            <Button
+              sx={{
+                "&.Mui-disabled": {
+                  color: "#5a5a5a",
+                },
+              }}
+              size="small"
+              onClick={() => {
+                activeStep === maxSteps - 1 ? createAccount() : handleNext();
+              }}
+              disabled={shouldDisable && activeStep === maxSteps - 1}
+            >
+              {activeStep === maxSteps - 1 ? "Comfirm" : "Next"}
+              {theme.direction === "rtl" ? (
+                <KeyboardArrowLeft />
+              ) : (
+                <KeyboardArrowRight />
+              )}
+            </Button>
+          }
+          backButton={
+            <Button
+              size="small"
+              onClick={handleBack}
+              disabled={activeStep === 0}
+              sx={{
+                "&.Mui-disabled": {
+                  color: "#5a5a5a",
+                },
+              }}
+            >
+              {theme.direction === "rtl" ? (
+                <KeyboardArrowRight />
+              ) : (
+                <KeyboardArrowLeft />
+              )}
+              Back
+            </Button>
+          }
+        />
       </Box>
     </ThemeProvider>
   );
