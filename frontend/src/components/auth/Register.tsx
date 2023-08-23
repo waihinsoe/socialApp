@@ -16,6 +16,7 @@ import { useState } from "react";
 import TextMobileStepper from "../Stepper";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import React from "react";
+import { config } from "../../config/config";
 
 const customTheme = createTheme({
   palette: {
@@ -56,7 +57,7 @@ const Register = () => {
       );
       const formData = new FormData();
       formData.append("file", imgBlob);
-      const response = await fetch("http://localhost:5000/assets", {
+      const response = await fetch(`${config.apiBaseUrl}/assets`, {
         method: "POST",
         body: formData,
       });
@@ -65,6 +66,17 @@ const Register = () => {
         setUserInfo({ ...userInfo, imgUrl: result.data });
       }
     }
+
+    const { name, email, password } = userInfo;
+    const isValid = name.length && email.length && password.length;
+    if (!isValid) return alert("Please fill all inputs.");
+    const response = await fetch(`${config.apiBaseUrl}/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userInfo),
+    });
   };
   return (
     <ThemeProvider theme={customTheme}>
