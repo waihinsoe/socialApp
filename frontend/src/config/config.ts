@@ -3,5 +3,5 @@ interface Config {
 }
 
 export const config: Config = {
-  apiBaseUrl: import.meta.env.API_BASE_URL || "",
+  apiBaseUrl: import.meta.env.VITE_API_BASE_URL || "",
 };

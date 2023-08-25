@@ -77,6 +77,12 @@ const Register = () => {
       },
       body: JSON.stringify(userInfo),
     });
+
+    if (response.ok) {
+      const responseJson = await response.json();
+
+      console.log(responseJson);
+    }
   };
   return (
     <ThemeProvider theme={customTheme}>
