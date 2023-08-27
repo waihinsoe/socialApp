@@ -63,10 +63,10 @@ const Register = () => {
       });
       if (response.ok) {
         const result = await response.json();
-        setUserInfo({ ...userInfo, imgUrl: result.data });
+        userInfo.imgUrl = result.data;
+        console.log(result);
       }
     }
-
     const { name, email, password } = userInfo;
     const isValid = name.length && email.length && password.length;
     if (!isValid) return alert("Please fill all inputs.");
@@ -84,6 +84,7 @@ const Register = () => {
       console.log(responseJson);
     }
   };
+
   return (
     <ThemeProvider theme={customTheme}>
       <Box
