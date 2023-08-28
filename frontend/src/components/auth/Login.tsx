@@ -6,7 +6,9 @@ import {
   Typography,
   createTheme,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { config } from "../../config/config";
 
 const customTheme = createTheme({
   palette: {
@@ -17,6 +19,23 @@ const customTheme = createTheme({
 });
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState({ email: "", password: "" });
+  const login = async () => {
+    const isValid = userInfo.email.length > 0 && userInfo.password.length > 0;
+    if (!isValid) return alert("wrong credentials");
+    const response = await fetch(`${config.apiBaseUrl}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userInfo),
+    });
+    if (response.ok) {
+      const responseJson = await response.json();
+      const accessToken = responseJson.accessToken;
+      localStorage.setItem("accessToken", accessToken);
+      navigate("/");
+    }
+  };
   return (
     <ThemeProvider theme={customTheme}>
       <Box sx={{ width: "100%", height: "100vh", p: 1 }}>
@@ -36,29 +55,29 @@ const Login = () => {
             label="Email"
             variant="filled"
             color="warning"
+            onChange={(evt) =>
+              setUserInfo({ ...userInfo, email: evt.target.value })
+            }
           />
           <TextField
             id="password"
             label="Password"
             variant="filled"
             color="warning"
+            onChange={(evt) =>
+              setUserInfo({ ...userInfo, password: evt.target.value })
+            }
           />
-          <Button variant="contained" color="warning">
+
+          <Button variant="contained" color="warning" onClick={login}>
             Login
           </Button>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 1,
-            }}
-          >
-            <Typography>If you don't have account,</Typography>
-            <Link to="/register">
-              <Typography sx={{ fontWeight: "bold" }}>Register here</Typography>
-            </Link>
-          </Box>
+
+          <Link to="/register" style={{ margin: "0 auto" }}>
+            <Button variant="contained" color="warning">
+              Create Account
+            </Button>
+          </Link>
         </Box>
       </Box>
     </ThemeProvider>

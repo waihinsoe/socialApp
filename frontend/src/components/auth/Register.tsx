@@ -10,7 +10,7 @@ import {
   createTheme,
   useTheme,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UploadAvatar from "../UploadAvatar";
 import { useState } from "react";
 import TextMobileStepper from "../Stepper";
@@ -28,6 +28,7 @@ const customTheme = createTheme({
 
 const Register = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = 4;
   const [preview, setPreview] = useState("");
@@ -80,8 +81,9 @@ const Register = () => {
 
     if (response.ok) {
       const responseJson = await response.json();
-
-      console.log(responseJson);
+      const accessToken = responseJson.accessToken;
+      localStorage.setItem("accessToken", accessToken);
+      navigate("/");
     }
   };
 

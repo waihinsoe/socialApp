@@ -9,18 +9,21 @@ import Settings from "../components/settings";
 import Logout from "../components/auth/Logout";
 import Login from "../components/auth/Login";
 import Register from "../components/auth/Register";
+import PrivateRoute from "./PrivateRoute";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/community" element={<Community />} />
-        <Route path="/messages" element={<Messages />} />
-        <Route path="/notification" element={<Notification />} />
-        <Route path="/explore" element={<Explore />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/" element={<App />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/messages" element={<Messages />} />
+          <Route path="/notification" element={<Notification />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
+        </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/logout" element={<Logout />} />
