@@ -3,6 +3,7 @@ import { assetsRouter } from "./routers/assetsRouter";
 import * as dotenv from "dotenv";
 import cors from "cors";
 import { pool } from "./utils/pg";
+import { authRouter } from "./routers/authRouter";
 dotenv.config();
 const app = express();
 const port = 5000;
@@ -49,6 +50,7 @@ CREATE TABLE IF NOT EXISTS likes (
 });
 
 app.use("/assets", assetsRouter);
+app.use("/auth", authRouter);
 
 app.listen(port, () => {
   console.log("app is listening at port ", port);
