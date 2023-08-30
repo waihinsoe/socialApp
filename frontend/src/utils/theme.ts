@@ -35,6 +35,7 @@ export const getDesignTokens = (mode: PaletteMode) => ({
           success: {
             main: "#377dff",
           },
+
           textColor: {
             primary: "#eeeff2",
             secondary: "#FFF",

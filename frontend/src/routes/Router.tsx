@@ -6,7 +6,6 @@ import Notification from "../components/notification";
 import Explore from "../components/explore";
 import Profile from "../components/profile";
 import Settings from "../components/settings";
-import Logout from "../components/auth/Logout";
 import Login from "../components/auth/Login";
 import Register from "../components/auth/Register";
 import PrivateRoute from "./PrivateRoute";
@@ -26,7 +25,6 @@ const Router = () => {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/logout" element={<Logout />} />
       </Routes>
     </BrowserRouter>
   );
