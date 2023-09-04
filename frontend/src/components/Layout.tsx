@@ -9,9 +9,15 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
   return (
-    <Box>
+    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <TopBar />
-      <Box sx={{ display: "flex", bgcolor: "primary.main" }}>
+      <Box
+        sx={{
+          display: "flex",
+          bgcolor: "primary.main",
+          flexGrow: 1,
+        }}
+      >
         <SideBar />
         <Box
           sx={{
@@ -19,6 +25,7 @@ const Layout = ({ children }: Props) => {
             borderRadius: 5,
             flexGrow: 1,
             p: 3,
+            color: "textColor.primary",
           }}
         >
           {children}

@@ -1,4 +1,4 @@
-import { PaletteMode } from "@mui/material";
+import { Button, PaletteMode, styled } from "@mui/material";
 
 export const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
@@ -16,6 +16,7 @@ export const getDesignTokens = (mode: PaletteMode) => ({
           },
           success: {
             main: "#377dff",
+            light: "#00B4FF",
           },
           textColor: {
             primary: "#4e5d78",
@@ -43,3 +44,17 @@ export const getDesignTokens = (mode: PaletteMode) => ({
         }),
   },
 });
+
+export const BlueButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.palette.success.main,
+  color: "#fff",
+  margin: 5,
+  "&:hover": {
+    backgroundColor: theme.palette.success.light,
+  },
+
+  "&:disabled": {
+    backgroundColor: "gray",
+    color: "white",
+  },
+}));
