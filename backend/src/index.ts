@@ -12,41 +12,18 @@ app.use(cors());
 
 app.get("/", async (req: Request, res: Response) => {
   const query = `
-CREATE TABLE IF NOT EXISTS likes (
-  id SERIAL PRIMARY KEY,
-  users_id INTEGER REFERENCES users (id),
-  posts_id INTEGER REFERENCES posts (id),
-  isLike boolean not null default false,
-  createdAt timestamp not null default now(),
-  updatedAt timestamp not null default now()
-  );
-  CREATE TABLE IF NOT EXISTS comments (
+
+  CREATE TABLE IF NOT EXISTS friend_requests (
     id SERIAL PRIMARY KEY,
-    users_id INTEGER REFERENCES users (id),
-    posts_id INTEGER REFERENCES posts (id),
-    content TEXT not null,
+    sender_id INTEGER REFERENCES users (id),
+    receiver_id INTEGER REFERENCES users (id),
+    status friend_request_status,
     createdAt timestamp not null default now(),
     updatedAt timestamp not null default now()
     );
-    CREATE TABLE IF NOT EXISTS repleys (
-      id SERIAL PRIMARY KEY,
-      users_id INTEGER REFERENCES users (id),
-      comments_id INTEGER REFERENCES comments (id),
-      content TEXT not null,
-      createdAt timestamp not null default now(),
-      updatedAt timestamp not null default now()
-      );
-      CREATE TABLE IF NOT EXISTS shares (
-        id SERIAL PRIMARY KEY,
-        users_id INTEGER REFERENCES users (id),
-        posts_id INTEGER REFERENCES posts (id),
-        caption TEXT  null,
-        createdAt timestamp not null default now(),
-        updatedAt timestamp not null default now()
-        );
 `;
-  const result = pool.query(query);
-  res.send("helloworld");
+  const result = await pool.query(query);
+  res.send(result.rows[0]);
 });
 
 app.use("/assets", assetsRouter);
