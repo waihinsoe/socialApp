@@ -97,6 +97,7 @@ const Register = () => {
           height: "100vh",
           display: "flex",
           flexDirection: "column",
+          // alignItems: "center",
           border: "1px solid #191c21",
         }}
       >
@@ -117,8 +118,6 @@ const Register = () => {
         <Box
           sx={{
             height: 255,
-            maxWidth: 500,
-            width: "100%",
             p: 2,
             flexGrow: { xs: 1 },
             display: "flex",

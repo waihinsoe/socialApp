@@ -3,7 +3,6 @@ import {
   Button,
   TextField,
   ThemeProvider,
-  Typography,
   createTheme,
 } from "@mui/material";
 import { useState } from "react";

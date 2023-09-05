@@ -1,13 +1,12 @@
 import { Box } from "@mui/material";
-import Layout from "../Layout";
 import { BlueButton } from "../../utils/theme";
 
 const Messages = () => {
   return (
-    <Layout>
+    <Box>
       <Box>This is messages page.</Box>
       <BlueButton>hello</BlueButton>
-    </Layout>
+    </Box>
   );
 };
 

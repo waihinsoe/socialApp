@@ -4,6 +4,7 @@ import * as dotenv from "dotenv";
 import cors from "cors";
 import { pool } from "./utils/pg";
 import { authRouter } from "./routers/authRouter";
+import { appRouter } from "./routers/appRouter";
 dotenv.config();
 const app = express();
 const port = 5000;
@@ -28,6 +29,7 @@ app.get("/", async (req: Request, res: Response) => {
 
 app.use("/assets", assetsRouter);
 app.use("/auth", authRouter);
+app.use("/app", appRouter);
 
 app.listen(port, () => {
   console.log("app is listening at port ", port);

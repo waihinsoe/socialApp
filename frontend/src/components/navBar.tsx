@@ -139,7 +139,7 @@ const NavBar = () => {
           <Typography
             variant="h6"
             component="div"
-            sx={{ display: "block", mr: 1, width: 200 }}
+            sx={{ display: "block", mr: 1, ml: 2, width: 200 }}
           >
             SocialApp
           </Typography>

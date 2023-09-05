@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { config } from "../../config/config";
 
 interface AppState {
   isLoading: boolean;
@@ -7,8 +8,13 @@ interface AppState {
 
 export const fetchAppData = createAsyncThunk(
   "app/fetchAppData",
-  async (userId: number, thunkAPI) => {
+  async (accessToken: string, thunkAPI) => {
     thunkAPI.dispatch(setAppLoading(true));
+    const response = await fetch(
+      `${config.apiBaseUrl}/app?accessToken=${accessToken}`
+    );
+    const responseJson = await response.json();
+    console.log(responseJson);
   }
 );
 

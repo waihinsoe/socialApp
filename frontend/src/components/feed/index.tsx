@@ -1,19 +1,24 @@
 import { Box } from "@mui/material";
-import Layout from "../Layout";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { decrement, increment } from "../../store/slice/counterSlice";
 import { BlueButton } from "../../utils/theme";
+import { fetchAppData } from "../../store/slice/appSlice";
 
 const Feed = () => {
   const count = useAppSelector((state) => state.counter.value);
   const dispatch = useAppDispatch();
+  const accessToken = localStorage.getItem("accessToken");
 
   return (
-    <Layout>
+    <>
       <Box>{count}</Box>
-      <BlueButton onClick={() => dispatch(increment())}>increate</BlueButton>
+      <BlueButton
+        onClick={() => accessToken && dispatch(fetchAppData(accessToken))}
+      >
+        fetchData
+      </BlueButton>
       <BlueButton onClick={() => dispatch(decrement())}>decreate</BlueButton>
-    </Layout>
+    </>
   );
 };
 
