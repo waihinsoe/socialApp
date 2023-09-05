@@ -10,6 +10,7 @@ import Login from "../components/auth/Login";
 import Register from "../components/auth/Register";
 import PrivateRoute from "./PrivateRoute";
 import Feed from "../components/feed";
+import Layout from "../components/Layout";
 
 const Router = () => {
   return (

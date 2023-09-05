@@ -1,12 +1,7 @@
 import { Box } from "@mui/material";
-import Layout from "../Layout";
 
 const Explore = () => {
-  return (
-    <Layout>
-      <Box>This is explore page.</Box>
-    </Layout>
-  );
+  return <Box>This is explore page.</Box>;
 };
 
 export default Explore;
