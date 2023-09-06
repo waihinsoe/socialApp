@@ -11,9 +11,8 @@ import {
   useTheme,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import UploadAvatar from "../UploadAvatar";
+import UploadAvatar from "../../components/UploadAvatar";
 import { useState } from "react";
-import TextMobileStepper from "../Stepper";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import React from "react";
 import { config } from "../../config/config";

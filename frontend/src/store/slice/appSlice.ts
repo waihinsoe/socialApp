@@ -10,9 +10,11 @@ export const fetchAppData = createAsyncThunk(
   "app/fetchAppData",
   async (accessToken: string, thunkAPI) => {
     thunkAPI.dispatch(setAppLoading(true));
-    const response = await fetch(
-      `${config.apiBaseUrl}/app?accessToken=${accessToken}`
-    );
+    const response = await fetch(`${config.apiBaseUrl}/app`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     const responseJson = await response.json();
     console.log(responseJson);
   }
