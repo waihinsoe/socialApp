@@ -1,16 +1,14 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import App from "../App";
-import Community from "../components/community";
-import Messages from "../components/messages";
-import Notification from "../components/notification";
-import Explore from "../components/explore";
-import Profile from "../components/profile";
-import Settings from "../components/settings";
-import Login from "../components/auth/Login";
-import Register from "../components/auth/Register";
+import Community from "../pages/community";
+import Messages from "../pages/messages";
+import Notification from "../pages/notification";
+import Explore from "../pages/explore";
+import Profile from "../pages/profile";
+import Settings from "../pages/settings";
+import Login from "../pages/auth/Login";
+import Register from "../pages/auth/Register";
 import PrivateRoute from "./PrivateRoute";
-import Feed from "../components/feed";
-import Layout from "../components/Layout";
+import Feed from "../pages/feed";
 
 const Router = () => {
   return (
