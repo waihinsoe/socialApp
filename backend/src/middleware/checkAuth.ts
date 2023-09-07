@@ -6,8 +6,9 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers["authorization"];
   const accessToken = authHeader?.split(" ")[1];
   if (!accessToken) return res.sendStatus(401);
-  const user = jwt.verify(accessToken, config.jwtSecret) as jwt.JwtPayload;
+  const user = jwt.verify(accessToken, config.jwtSecret);
   //@ts-ignore
   req["email"] = user.email;
+
   next();
 };

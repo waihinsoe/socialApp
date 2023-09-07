@@ -36,3 +36,5 @@ export const appSlice = createSlice({
 });
 
 export const { setAppLoading } = appSlice.actions;
+
+export default appSlice.reducer;

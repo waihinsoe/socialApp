@@ -1,0 +1,28 @@
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { Share } from "../../typings/types";
+
+interface SharesState {
+  isLoading: boolean;
+  shares: Share[];
+  error: Error | null;
+}
+
+const initialState: SharesState = {
+  isLoading: true,
+  shares: [],
+  error: null,
+};
+
+export const sharesSlice = createSlice({
+  name: "shares",
+  initialState,
+  reducers: {
+    setShares: (state, action: PayloadAction<Share[]>) => {
+      state.shares = action.payload;
+    },
+  },
+});
+
+export const { setShares } = sharesSlice.actions;
+
+export default sharesSlice.reducer;
