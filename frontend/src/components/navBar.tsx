@@ -12,6 +12,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import DarkModeToggle from "./darkModeToggle";
+import { useAppSelector } from "../store/hook";
+import { appData } from "../store/slice/appSlice";
+import { Avatar } from "@mui/material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -54,6 +57,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 const NavBar = () => {
+  const { owner } = useAppSelector(appData);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -155,7 +159,7 @@ const NavBar = () => {
           <Box sx={{ flexGrow: 1 }} />
           <DarkModeToggle />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
+            {/* <IconButton
               size="large"
               edge="end"
               aria-label="account of current user"
@@ -165,7 +169,8 @@ const NavBar = () => {
               color="inherit"
             >
               <AccountCircle />
-            </IconButton>
+            </IconButton> */}
+            <Avatar alt="Remy Sharp" src={owner ? owner.asset_url : ""} />
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton

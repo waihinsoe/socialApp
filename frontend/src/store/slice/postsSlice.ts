@@ -3,13 +3,13 @@ import { Post } from "../../typings/types";
 
 interface PostsState {
   isLoading: boolean;
-  posts: Post[];
+  items: Post[];
   error: Error | null;
 }
 
 const initialState: PostsState = {
   isLoading: true,
-  posts: [],
+  items: [],
   error: null,
 };
 
@@ -18,7 +18,7 @@ export const postsSlice = createSlice({
   initialState,
   reducers: {
     setPosts: (state, action: PayloadAction<Post[]>) => {
-      state.posts = action.payload;
+      state.items = action.payload;
     },
   },
 });

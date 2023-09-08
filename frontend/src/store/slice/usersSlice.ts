@@ -3,13 +3,13 @@ import { User } from "../../typings/types";
 
 interface UsersState {
   isLoading: boolean;
-  users: User[];
+  items: User[];
   error: Error | null;
 }
 
 const initialState: UsersState = {
   isLoading: true,
-  users: [],
+  items: [],
   error: null,
 };
 
@@ -18,7 +18,7 @@ export const usersSlice = createSlice({
   initialState,
   reducers: {
     setUsers: (state, action: PayloadAction<User[]>) => {
-      state.users = action.payload;
+      state.items = action.payload;
     },
   },
 });

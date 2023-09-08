@@ -3,13 +3,13 @@ import { Comment } from "../../typings/types";
 
 interface CommentsState {
   isLoading: boolean;
-  comments: Comment[];
+  items: Comment[];
   error: Error | null;
 }
 
 const initialState: CommentsState = {
   isLoading: true,
-  comments: [],
+  items: [],
   error: null,
 };
 
@@ -18,7 +18,7 @@ export const commentsSlice = createSlice({
   initialState,
   reducers: {
     setComments: (state, action: PayloadAction<Comment[]>) => {
-      state.comments = action.payload;
+      state.items = action.payload;
     },
   },
 });

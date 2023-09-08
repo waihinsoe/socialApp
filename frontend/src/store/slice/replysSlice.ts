@@ -3,13 +3,13 @@ import { Reply } from "../../typings/types";
 
 interface ReplysState {
   isLoading: boolean;
-  replys: Reply[];
+  items: Reply[];
   error: Error | null;
 }
 
 const initialState: ReplysState = {
   isLoading: true,
-  replys: [],
+  items: [],
   error: null,
 };
 
@@ -18,7 +18,7 @@ export const replysSlice = createSlice({
   initialState,
   reducers: {
     setReplys: (state, action: PayloadAction<Reply[]>) => {
-      state.replys = action.payload;
+      state.items = action.payload;
     },
   },
 });

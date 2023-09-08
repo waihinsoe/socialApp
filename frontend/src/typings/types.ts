@@ -2,7 +2,7 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  assetUrl: string;
+  asset_url: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -10,7 +10,7 @@ export interface User {
 export interface Post {
   id: number;
   caption: string;
-  photoUrl: string;
+  photo_url: string;
   usersId: number;
   createdAt: Date;
   updatedAt: Date;

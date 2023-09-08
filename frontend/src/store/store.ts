@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterSlice from "./slice/counterSlice";
 import appSlice from "./slice/appSlice";
 import ownerSlice from "./slice/ownerSlice";
 import usersSlice from "./slice/usersSlice";
@@ -13,7 +12,6 @@ import friendRequestsSlice from "./slice/friendRequestsSlice";
 
 export const store = configureStore({
   reducer: {
-    counter: counterSlice,
     app: appSlice,
     owner: ownerSlice,
     users: usersSlice,

@@ -1,5 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { config } from "../../config/config";
+import { setOwner } from "./ownerSlice";
+import { setUsers } from "./usersSlice";
+import { setLikes } from "./likesSlice";
+import { setComments } from "./commetsSlice";
+import { setShares } from "./sharesSlice";
+import { setPosts } from "./postsSlice";
+import { setReplys } from "./replysSlice";
+import { setFriendRequests } from "./friendRequestsSlice";
+import { RootState } from "../store";
 
 interface AppState {
   isLoading: boolean;
@@ -15,8 +24,29 @@ export const fetchAppData = createAsyncThunk(
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    const responseJson = await response.json();
-    console.log(responseJson);
+    if (response.ok) {
+      const responseJson = await response.json();
+      const {
+        owner,
+        users,
+        likes,
+        comments,
+        shares,
+        posts,
+        replys,
+        friendRequests,
+      } = responseJson;
+
+      thunkAPI.dispatch(setOwner(owner));
+      thunkAPI.dispatch(setUsers(users));
+      thunkAPI.dispatch(setLikes(likes));
+      thunkAPI.dispatch(setComments(comments));
+      thunkAPI.dispatch(setShares(shares));
+      thunkAPI.dispatch(setPosts(posts));
+      thunkAPI.dispatch(setReplys(replys));
+      thunkAPI.dispatch(setFriendRequests(friendRequests));
+      thunkAPI.dispatch(setAppLoading(false));
+    }
   }
 );
 
@@ -34,6 +64,27 @@ export const appSlice = createSlice({
     },
   },
 });
+
+export const appData = (state: RootState) => {
+  const owner = state.owner.items;
+  const users = state.users.items;
+  const likes = state.likes.items;
+  const comments = state.comments.items;
+  const shares = state.shares.items;
+  const posts = state.posts.items;
+  const replys = state.replys.items;
+  const friendRequests = state.friendRequests;
+  return {
+    owner,
+    users,
+    likes,
+    comments,
+    shares,
+    posts,
+    replys,
+    friendRequests,
+  };
+};
 
 export const { setAppLoading } = appSlice.actions;
 

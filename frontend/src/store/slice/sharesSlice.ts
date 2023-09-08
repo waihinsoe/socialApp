@@ -3,13 +3,13 @@ import { Share } from "../../typings/types";
 
 interface SharesState {
   isLoading: boolean;
-  shares: Share[];
+  items: Share[];
   error: Error | null;
 }
 
 const initialState: SharesState = {
   isLoading: true,
-  shares: [],
+  items: [],
   error: null,
 };
 
@@ -18,7 +18,7 @@ export const sharesSlice = createSlice({
   initialState,
   reducers: {
     setShares: (state, action: PayloadAction<Share[]>) => {
-      state.shares = action.payload;
+      state.items = action.payload;
     },
   },
 });
