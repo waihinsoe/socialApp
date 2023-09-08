@@ -3,22 +3,22 @@ import { FriendRequest } from "../../typings/types";
 
 interface FriendRequestsState {
   isLoading: boolean;
-  friendRequests: FriendRequest[];
+  items: FriendRequest[];
   error: Error | null;
 }
 
 const initialState: FriendRequestsState = {
   isLoading: true,
-  friendRequests: [],
+  items: [],
   error: null,
 };
 
 export const friendRequestsSlice = createSlice({
-  name: "comments",
+  name: "friendRequests",
   initialState,
   reducers: {
     setFriendRequests: (state, action: PayloadAction<FriendRequest[]>) => {
-      state.friendRequests = action.payload;
+      state.items = action.payload;
     },
   },
 });

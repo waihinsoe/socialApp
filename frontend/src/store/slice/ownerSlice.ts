@@ -3,13 +3,13 @@ import { User } from "../../typings/types";
 
 interface OwnerState {
   isLoading: boolean;
-  owner: User | null;
+  items: User | null;
   error: Error | null;
 }
 
 const initialState: OwnerState = {
   isLoading: true,
-  owner: null,
+  items: null,
   error: null,
 };
 
@@ -18,7 +18,7 @@ export const ownerSlice = createSlice({
   initialState,
   reducers: {
     setOwner: (state, action: PayloadAction<User>) => {
-      state.owner = action.payload;
+      state.items = action.payload;
     },
   },
 });
