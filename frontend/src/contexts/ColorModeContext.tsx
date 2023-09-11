@@ -26,6 +26,7 @@ export const ColorModeProvider = ({ children }: Props) => {
     () => createTheme(getDesignTokens(data.mode)),
     [data.mode]
   );
+
   return (
     <ColorModeContext.Provider value={{ ...data, updateData }}>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>

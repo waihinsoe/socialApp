@@ -159,18 +159,11 @@ const NavBar = () => {
           <Box sx={{ flexGrow: 1 }} />
           <DarkModeToggle />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            {/* <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton> */}
-            <Avatar alt="Remy Sharp" src={owner ? owner.asset_url : ""} />
+            <Avatar
+              alt="Remy Sharp"
+              src={owner ? owner.asset_url : ""}
+              sx={{ width: 50, height: 50 }}
+            />
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton

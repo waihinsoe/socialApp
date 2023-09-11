@@ -10,6 +10,7 @@ export const getDesignTokens = (mode: PaletteMode) => ({
           },
           secondary: {
             main: "#f9fafb",
+            light: "#9f1802",
           },
           info: {
             main: "#4e5d78",
