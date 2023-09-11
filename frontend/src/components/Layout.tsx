@@ -39,6 +39,7 @@ const Layout = ({ children }: Props) => {
         >
           {children}
         </Box>
+        <SideBar />
       </Box>
     </Box>
   );
