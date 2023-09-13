@@ -1,18 +1,12 @@
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { BlueButton } from "../../utils/theme";
 import { appData, fetchAppData } from "../../store/slice/appSlice";
-import {
-  Avatar,
-  Box,
-  Button,
-  IconButton,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Button, Paper } from "@mui/material";
 import { ColorModeContext } from "../../contexts/ColorModeContext";
 import { useContext } from "react";
 import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
-
+import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
+import SentimentSatisfiedOutlinedIcon from "@mui/icons-material/SentimentSatisfiedOutlined";
 const Feed = () => {
   const { mode } = useContext(ColorModeContext);
   const { owner } = useAppSelector(appData);
@@ -37,8 +31,26 @@ const Feed = () => {
             placeholder="What's happening?"
           />
         </Box>
-        <Box>
-          <Box></Box>
+        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+          <Button
+            sx={{ color: "white", flexGrow: 1 }}
+            startIcon={<VideocamOutlinedIcon />}
+          >
+            live video
+          </Button>
+          <Button
+            sx={{ color: "white", flexGrow: 1 }}
+            startIcon={<PhotoLibraryOutlinedIcon />}
+          >
+            Photo/video
+          </Button>
+          <Button
+            sx={{ color: "white", flexGrow: 1 }}
+            startIcon={<SentimentSatisfiedOutlinedIcon />}
+          >
+            feeling
+          </Button>
+          <BlueButton sx={{ width: 150 }}>Post</BlueButton>
         </Box>
       </Paper>
       <BlueButton
