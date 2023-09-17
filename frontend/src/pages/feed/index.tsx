@@ -3,15 +3,39 @@ import { BlueButton } from "../../utils/theme";
 import { appData, fetchAppData } from "../../store/slice/appSlice";
 import { Avatar, Box, Button, Paper } from "@mui/material";
 import { ColorModeContext } from "../../contexts/ColorModeContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
 import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
 import SentimentSatisfiedOutlinedIcon from "@mui/icons-material/SentimentSatisfiedOutlined";
+import { Post } from "../../typings/types";
+import { config } from "../../config/config";
 const Feed = () => {
   const { mode } = useContext(ColorModeContext);
   const { owner } = useAppSelector(appData);
   const dispatch = useAppDispatch();
   const accessToken = localStorage.getItem("accessToken");
+  const [newPost, setNewPost] = useState<Post>({
+    caption: "",
+    usersId: owner?.id as number,
+  });
+
+  const createNewPost = async () => {
+    const isValid = newPost.caption.length > 0 && newPost.usersId > 0;
+    if (!isValid) return alert("need more caption!!!");
+    const response = await fetch(`${config.apiBaseUrl}/feed`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(newPost),
+    });
+
+    if (response.ok) {
+      const responseJson = await response.json();
+      console.log(responseJson);
+    }
+  };
 
   return (
     <Box>
@@ -29,28 +53,33 @@ const Feed = () => {
               color: mode === "dark" ? "#eeeff2" : "#4e5d78",
             }}
             placeholder="What's happening?"
+            onChange={(evt) =>
+              setNewPost({ ...newPost, caption: evt.target.value })
+            }
           />
         </Box>
         <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
           <Button
-            sx={{ color: "white", flexGrow: 1 }}
+            sx={{ color: mode === "dark" ? "white" : "#4e5d78", flexGrow: 1 }}
             startIcon={<VideocamOutlinedIcon />}
           >
             live video
           </Button>
           <Button
-            sx={{ color: "white", flexGrow: 1 }}
+            sx={{ color: mode === "dark" ? "white" : "#4e5d78", flexGrow: 1 }}
             startIcon={<PhotoLibraryOutlinedIcon />}
           >
             Photo/video
           </Button>
           <Button
-            sx={{ color: "white", flexGrow: 1 }}
+            sx={{ color: mode === "dark" ? "white" : "#4e5d78", flexGrow: 1 }}
             startIcon={<SentimentSatisfiedOutlinedIcon />}
           >
             feeling
           </Button>
-          <BlueButton sx={{ width: 150 }}>Post</BlueButton>
+          <BlueButton sx={{ width: 150 }} onClick={createNewPost}>
+            Post
+          </BlueButton>
         </Box>
       </Paper>
       <BlueButton
