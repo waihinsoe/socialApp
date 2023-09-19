@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { BlueButton } from "../../utils/theme";
 import { appData, fetchAppData } from "../../store/slice/appSlice";
-import { Avatar, Box, Button, Paper } from "@mui/material";
+import { Avatar, Box, Button, Paper, Typography } from "@mui/material";
 import { ColorModeContext } from "../../contexts/ColorModeContext";
 import { useContext, useState } from "react";
 import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
@@ -11,17 +11,18 @@ import { Post } from "../../typings/types";
 import { config } from "../../config/config";
 const Feed = () => {
   const { mode } = useContext(ColorModeContext);
-  const { owner } = useAppSelector(appData);
+  const { owner, posts, users } = useAppSelector(appData);
   const dispatch = useAppDispatch();
   const accessToken = localStorage.getItem("accessToken");
   const [newPost, setNewPost] = useState<Post>({
     caption: "",
-    usersId: owner?.id as number,
+    users_id: owner ? (owner.id as number) : 0,
   });
-
   const createNewPost = async () => {
-    const isValid = newPost.caption.length > 0 && newPost.usersId > 0;
-    if (!isValid) return alert("need more caption!!!");
+    if (!owner) return;
+    console.log("owner", owner);
+    const isValid = newPost.caption.length > 0 && newPost.users_id > 0;
+    if (!isValid) return alert("need  caption!!!");
     const response = await fetch(`${config.apiBaseUrl}/feed`, {
       method: "POST",
       headers: {
@@ -32,16 +33,19 @@ const Feed = () => {
     });
 
     if (response.ok) {
-      const responseJson = await response.json();
-      console.log(responseJson);
+      const createdNewPost = await response.json();
+      console.log(createdNewPost);
     }
   };
 
   return (
-    <Box>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
       <Paper elevation={5} sx={{ p: 2 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <Avatar src={owner ? owner.asset_url : ""} />
+          <Avatar
+            src={owner ? owner.asset_url : ""}
+            sx={{ width: 50, height: 50 }}
+          />
           <input
             style={{
               padding: "12px",
@@ -82,6 +86,27 @@ const Feed = () => {
           </BlueButton>
         </Box>
       </Paper>
+
+      {posts.length > 0 &&
+        posts.map((post) => {
+          const postOwner = users.find((user) => user.id === post.users_id);
+          return (
+            <Paper elevation={5} sx={{ p: 2 }}>
+              <Box>
+                <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+                  <Avatar
+                    src={postOwner?.asset_url}
+                    sx={{ width: 50, height: 50 }}
+                  />
+                  <Box>
+                    <Typography>{postOwner?.name}</Typography>
+                  </Box>
+                </Box>
+              </Box>
+            </Paper>
+          );
+        })}
+
       <BlueButton
         onClick={() => accessToken && dispatch(fetchAppData(accessToken))}
       >

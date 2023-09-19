@@ -11,14 +11,14 @@ export interface Post {
   id?: number;
   caption: string;
   photo_url?: string;
-  usersId: number;
+  users_id: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
 export interface Comment {
   id?: number;
-  usersId: number;
+  users_id: number;
   postsId: number;
   content: string;
   createdAt?: Date;
@@ -27,7 +27,7 @@ export interface Comment {
 
 export interface Reply {
   id?: number;
-  usersId: number;
+  users_id: number;
   commentsId: number;
   content: string;
   createdAt?: Date;
@@ -36,7 +36,7 @@ export interface Reply {
 
 export interface Share {
   id?: number;
-  usersId: number;
+  users_id: number;
   postsId: number;
   caption?: string;
   createdAt?: Date;
@@ -45,7 +45,7 @@ export interface Share {
 
 export interface Like {
   id?: number;
-  usersId: number;
+  users_id: number;
   postsId: number;
   isLike: boolean;
   createdAt?: Date;

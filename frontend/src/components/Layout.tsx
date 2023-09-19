@@ -18,7 +18,13 @@ const Layout = ({ children }: Props) => {
     }
   }, [accessToken]);
   return (
-    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <Box
+      sx={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <TopBar />
       <Box
         sx={{
@@ -35,6 +41,8 @@ const Layout = ({ children }: Props) => {
             flexGrow: 1,
             p: 3,
             color: "textColor.primary",
+            height: "79vh",
+            overflowY: "scroll",
           }}
         >
           {children}
