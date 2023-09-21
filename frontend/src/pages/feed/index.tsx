@@ -1,7 +1,14 @@
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { BlueButton } from "../../utils/theme";
 import { appData, fetchAppData } from "../../store/slice/appSlice";
-import { Avatar, Box, Button, Paper, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  IconButton,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { ColorModeContext } from "../../contexts/ColorModeContext";
 import { useContext, useState } from "react";
 import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
@@ -9,6 +16,7 @@ import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
 import SentimentSatisfiedOutlinedIcon from "@mui/icons-material/SentimentSatisfiedOutlined";
 import { Post } from "../../typings/types";
 import { config } from "../../config/config";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 const Feed = () => {
   const { mode } = useContext(ColorModeContext);
   const { owner, posts, users } = useAppSelector(appData);
@@ -91,8 +99,19 @@ const Feed = () => {
         posts.map((post) => {
           const postOwner = users.find((user) => user.id === post.users_id);
           return (
-            <Paper elevation={5} sx={{ p: 2 }}>
-              <Box>
+            <Paper
+              elevation={5}
+              sx={{
+                p: 2,
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
                 <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
                   <Avatar
                     src={postOwner?.asset_url}
@@ -100,8 +119,15 @@ const Feed = () => {
                   />
                   <Box>
                     <Typography>{postOwner?.name}</Typography>
+                    <Typography>{postOwner?.email}</Typography>
                   </Box>
                 </Box>
+                <IconButton>
+                  <MoreHorizIcon />
+                </IconButton>
+              </Box>
+              <Box>
+                <img src={post.photo_url} />
               </Box>
             </Paper>
           );
