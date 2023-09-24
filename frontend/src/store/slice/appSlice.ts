@@ -15,6 +15,11 @@ interface AppState {
   error: Error | null;
 }
 
+const initialState: AppState = {
+  isLoading: true,
+  error: null,
+};
+
 export const fetchAppData = createAsyncThunk(
   "app/fetchAppData",
   async (accessToken: string, thunkAPI) => {
@@ -49,11 +54,6 @@ export const fetchAppData = createAsyncThunk(
     }
   }
 );
-
-const initialState: AppState = {
-  isLoading: true,
-  error: null,
-};
 
 export const appSlice = createSlice({
   name: "app",

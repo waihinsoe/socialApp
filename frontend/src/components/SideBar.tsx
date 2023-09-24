@@ -71,7 +71,6 @@ const SideBar = () => {
       sx={{
         width: 230,
         bgcolor: "primary.main",
-        // minHeight: "100vh",
         padding: "0 1.5rem",
         display: "flex",
         flexDirection: "column",
