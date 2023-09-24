@@ -28,7 +28,7 @@ const Feed = () => {
   });
   const createNewPost = async () => {
     if (!owner) return;
-    console.log("owner", owner);
+    console.log(newPost);
     const isValid = newPost.caption.length > 0 && newPost.users_id > 0;
     if (!isValid) return alert("need  caption!!!");
     const response = await fetch(`${config.apiBaseUrl}/feed`, {
@@ -48,7 +48,7 @@ const Feed = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-      <Paper elevation={5} sx={{ p: 2 }}>
+      <Paper elevation={2} sx={{ p: 3, borderRadius: 5 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Avatar
             src={owner ? owner.asset_url : ""}
@@ -100,9 +100,13 @@ const Feed = () => {
           const postOwner = users.find((user) => user.id === post.users_id);
           return (
             <Paper
-              elevation={5}
+              elevation={2}
               sx={{
-                p: 2,
+                p: 3,
+                display: "flex",
+                flexDirection: "column",
+                gap: 3,
+                borderRadius: 5,
               }}
             >
               <Box
@@ -119,15 +123,56 @@ const Feed = () => {
                   />
                   <Box>
                     <Typography>{postOwner?.name}</Typography>
-                    <Typography>{postOwner?.email}</Typography>
+                    <Typography>{post.caption}</Typography>
                   </Box>
                 </Box>
                 <IconButton>
                   <MoreHorizIcon />
                 </IconButton>
               </Box>
-              <Box>
-                <img src={post.photo_url} />
+              <Box
+                sx={{
+                  width: "100%",
+                }}
+              >
+                <img
+                  src={post.photo_url}
+                  style={{
+                    width: "100%",
+                    objectFit: "cover",
+                    borderRadius: "15px",
+                  }}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box sx={{ display: "flex" }}>
+                  {users.slice(12, users.length).map((user) => {
+                    return (
+                      <Avatar
+                        src={user.asset_url}
+                        sx={{ width: 30, height: 30, mr: -1 }}
+                      />
+                    );
+                  })}
+                </Box>
+                <Box sx={{ display: "flex", gap: 2 }}>
+                  <Typography>3 Comments</Typography>
+                  <Typography>17 shares</Typography>
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  borderTop: "1px solid",
+                  borderBottom: "1px solid",
+                  py: 2,
+                }}
+              >
+                hello
               </Box>
             </Paper>
           );
