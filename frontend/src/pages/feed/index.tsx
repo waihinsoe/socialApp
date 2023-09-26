@@ -17,6 +17,10 @@ import SentimentSatisfiedOutlinedIcon from "@mui/icons-material/SentimentSatisfi
 import { Post } from "../../typings/types";
 import { config } from "../../config/config";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
+import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
+
 const Feed = () => {
   const { mode } = useContext(ColorModeContext);
   const { owner, posts, users } = useAppSelector(appData);
@@ -54,40 +58,53 @@ const Feed = () => {
             src={owner ? owner.asset_url : ""}
             sx={{ width: 50, height: 50 }}
           />
-          <input
-            style={{
-              padding: "12px",
+          <Button
+            sx={{
+              p: 1.5,
               border: `1px solid ${mode === "dark" ? "#4e5d78" : "#e5e5e5"}`,
               outline: "none",
               borderRadius: "10px",
               width: "100%",
               backgroundColor: mode === "dark" ? "#212833" : "#f9fafb",
               color: mode === "dark" ? "#eeeff2" : "#4e5d78",
+              textTransform: "none",
+              display: "flex",
+              justifyContent: "start",
             }}
-            placeholder="What's happening?"
-            onChange={(evt) =>
-              setNewPost({ ...newPost, caption: evt.target.value })
-            }
-          />
+          >
+            What's happening?
+          </Button>
         </Box>
         <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
           <Button
-            sx={{ color: mode === "dark" ? "white" : "#4e5d78", flexGrow: 1 }}
+            sx={{
+              color: mode === "dark" ? "white" : "#4e5d78",
+              flexGrow: 1,
+              textTransform: "none",
+            }}
             startIcon={<VideocamOutlinedIcon />}
           >
-            live video
+            Live Video
           </Button>
           <Button
-            sx={{ color: mode === "dark" ? "white" : "#4e5d78", flexGrow: 1 }}
+            sx={{
+              color: mode === "dark" ? "white" : "#4e5d78",
+              flexGrow: 1,
+              textTransform: "none",
+            }}
             startIcon={<PhotoLibraryOutlinedIcon />}
           >
-            Photo/video
+            Photo/Video
           </Button>
           <Button
-            sx={{ color: mode === "dark" ? "white" : "#4e5d78", flexGrow: 1 }}
+            sx={{
+              color: mode === "dark" ? "white" : "#4e5d78",
+              flexGrow: 1,
+              textTransform: "none",
+            }}
             startIcon={<SentimentSatisfiedOutlinedIcon />}
           >
-            feeling
+            Feeling
           </Button>
           <BlueButton sx={{ width: 150 }} onClick={createNewPost}>
             Post
@@ -169,10 +186,40 @@ const Feed = () => {
                 sx={{
                   borderTop: "1px solid",
                   borderBottom: "1px solid",
-                  py: 2,
+                  py: 1,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  color: mode === "dark" ? "white" : "#4e5d78",
                 }}
               >
-                hello
+                <Button
+                  sx={{
+                    color: mode === "dark" ? "white" : "#4e5d78",
+                    textTransform: "capitalize",
+                  }}
+                  startIcon={<FavoriteBorderOutlinedIcon />}
+                >
+                  like
+                </Button>
+                <Button
+                  sx={{
+                    color: mode === "dark" ? "white" : "#4e5d78",
+                    textTransform: "capitalize",
+                  }}
+                  startIcon={<ChatBubbleOutlineRoundedIcon />}
+                >
+                  comments
+                </Button>
+                <Button
+                  sx={{
+                    color: mode === "dark" ? "white" : "#4e5d78",
+                    textTransform: "capitalize",
+                  }}
+                  startIcon={<ShareOutlinedIcon />}
+                >
+                  share
+                </Button>
               </Box>
             </Paper>
           );
