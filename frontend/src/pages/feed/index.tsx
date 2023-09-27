@@ -5,6 +5,11 @@ import {
   Avatar,
   Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   Paper,
   Typography,
@@ -24,12 +29,20 @@ import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 const Feed = () => {
   const { mode } = useContext(ColorModeContext);
   const { owner, posts, users } = useAppSelector(appData);
-  const dispatch = useAppDispatch();
   const accessToken = localStorage.getItem("accessToken");
   const [newPost, setNewPost] = useState<Post>({
     caption: "",
     users_id: owner ? (owner.id as number) : 0,
   });
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const createNewPost = async () => {
     if (!owner) return;
     console.log(newPost);
@@ -59,6 +72,7 @@ const Feed = () => {
             sx={{ width: 50, height: 50 }}
           />
           <Button
+            onClick={handleClickOpen}
             sx={{
               p: 1.5,
               border: `1px solid ${mode === "dark" ? "#4e5d78" : "#e5e5e5"}`,
@@ -77,6 +91,7 @@ const Feed = () => {
         </Box>
         <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
           <Button
+            onClick={handleClickOpen}
             sx={{
               color: mode === "dark" ? "white" : "#4e5d78",
               flexGrow: 1,
@@ -87,6 +102,7 @@ const Feed = () => {
             Live Video
           </Button>
           <Button
+            onClick={handleClickOpen}
             sx={{
               color: mode === "dark" ? "white" : "#4e5d78",
               flexGrow: 1,
@@ -97,6 +113,7 @@ const Feed = () => {
             Photo/Video
           </Button>
           <Button
+            onClick={handleClickOpen}
             sx={{
               color: mode === "dark" ? "white" : "#4e5d78",
               flexGrow: 1,
@@ -225,11 +242,43 @@ const Feed = () => {
           );
         })}
 
-      <BlueButton
+      {/* <BlueButton
         onClick={() => accessToken && dispatch(fetchAppData(accessToken))}
       >
         fetchData
-      </BlueButton>
+      </BlueButton> */}
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle
+          id="alert-dialog-title"
+          sx={{
+            backgroundColor: mode === "dark" ? "#212833" : "#f9fafb",
+            color: mode === "dark" ? "#eeeff2" : "#4e5d78",
+          }}
+        >
+          <Typography variant="h5">Create post</Typography>
+        </DialogTitle>
+        <DialogContent
+          sx={{
+            backgroundColor: mode === "dark" ? "#212833" : "#f9fafb",
+            color: mode === "dark" ? "#eeeff2" : "#4e5d78",
+          }}
+        >
+          <DialogContentText id="alert-dialog-description">
+            Let Google help apps determine location. This means sending
+            anonymous location data to Google, even when no apps are running.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions
+          sx={{
+            backgroundColor: mode === "dark" ? "#212833" : "#f9fafb",
+            color: mode === "dark" ? "#eeeff2" : "#4e5d78",
+          }}
+        >
+          <Button onClick={handleClose} color="success" autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
