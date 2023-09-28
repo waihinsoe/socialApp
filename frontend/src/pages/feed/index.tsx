@@ -1,6 +1,6 @@
-import { useAppDispatch, useAppSelector } from "../../store/hook";
+import { useAppSelector } from "../../store/hook";
 import { BlueButton } from "../../utils/theme";
-import { appData, fetchAppData } from "../../store/slice/appSlice";
+import { appData } from "../../store/slice/appSlice";
 import {
   Avatar,
   Box,
@@ -25,6 +25,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 const Feed = () => {
   const { mode } = useContext(ColorModeContext);
@@ -247,15 +248,38 @@ const Feed = () => {
       >
         fetchData
       </BlueButton> */}
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        sx={{
+          "& .MuiDialog-paper": {
+            borderRadius: "10px",
+          },
+        }}
+      >
         <DialogTitle
           id="alert-dialog-title"
           sx={{
             backgroundColor: mode === "dark" ? "#212833" : "#f9fafb",
             color: mode === "dark" ? "#eeeff2" : "#4e5d78",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <Typography variant="h5">Create post</Typography>
+          <Typography
+            variant="h5"
+            sx={{
+              flexGrow: 1,
+              textAlign: "center",
+              pl: 6,
+            }}
+          >
+            Create post
+          </Typography>
+          <IconButton onClick={handleClose}>
+            <CloseRoundedIcon sx={{ fontSize: 35 }} />
+          </IconButton>
         </DialogTitle>
         <DialogContent
           sx={{
@@ -274,9 +298,9 @@ const Feed = () => {
             color: mode === "dark" ? "#eeeff2" : "#4e5d78",
           }}
         >
-          <Button onClick={handleClose} color="success" autoFocus>
-            Agree
-          </Button>
+          <BlueButton onClick={handleClose} color="success" fullWidth>
+            Post
+          </BlueButton>
         </DialogActions>
       </Dialog>
     </Box>
