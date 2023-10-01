@@ -26,7 +26,7 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-
+import PublicIcon from "@mui/icons-material/Public";
 const Feed = () => {
   const { mode } = useContext(ColorModeContext);
   const { owner, posts, users } = useAppSelector(appData);
@@ -254,6 +254,7 @@ const Feed = () => {
         sx={{
           "& .MuiDialog-paper": {
             borderRadius: "10px",
+            width: 500,
           },
         }}
       >
@@ -288,8 +289,22 @@ const Feed = () => {
           }}
         >
           <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
+            <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+              <Avatar src={owner?.asset_url} sx={{ width: 45, height: 45 }} />
+
+              <Box>
+                <Typography>{owner?.name}</Typography>
+                <select name="status" id="status">
+                  <option value="public">
+                    <Box>
+                      <PublicIcon />
+                    </Box>
+                    <Typography>Public</Typography>
+                  </option>
+                  <option value="friends">Friends</option>
+                </select>
+              </Box>
+            </Box>
           </DialogContentText>
         </DialogContent>
         <DialogActions
