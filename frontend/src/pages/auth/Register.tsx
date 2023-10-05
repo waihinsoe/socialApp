@@ -64,7 +64,6 @@ const Register = () => {
       if (response.ok) {
         const result = await response.json();
         userInfo.imgUrl = result.data;
-        console.log(result);
       }
     }
     const { name, email, password } = userInfo;
