@@ -19,14 +19,31 @@ import { useContext, useState } from "react";
 import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
 import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
 import SentimentSatisfiedOutlinedIcon from "@mui/icons-material/SentimentSatisfiedOutlined";
-import { Post } from "../../typings/types";
+import { Post, PostStatus } from "../../typings/types";
 import { config } from "../../config/config";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import PublicIcon from "@mui/icons-material/Public";
+
+// Import React FilePond
+import { FilePond, registerPlugin } from "react-filepond";
+
+// Import FilePond styles
+import "filepond/dist/filepond.min.css";
+
+// Import the Image EXIF Orientation and Image Preview plugins
+// Note: These need to be installed separately
+// `npm i filepond-plugin-image-preview filepond-plugin-image-exif-orientation --save`
+import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+import { ActualFileObject } from "filepond";
+
+// Register the plugins
+registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
+
 const Feed = () => {
   const { mode } = useContext(ColorModeContext);
   const { owner, posts, users } = useAppSelector(appData);
@@ -34,7 +51,13 @@ const Feed = () => {
   const [newPost, setNewPost] = useState<Post>({
     caption: "",
     users_id: owner ? (owner.id as number) : 0,
+    photo_url: "",
+    status: PostStatus.public,
   });
+
+  const [images, setImages] = useState<ActualFileObject[]>([]);
+  console.log(images);
+  console.log(newPost);
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -46,9 +69,25 @@ const Feed = () => {
   };
   const createNewPost = async () => {
     if (!owner) return;
-    console.log(newPost);
-    const isValid = newPost.caption.length > 0 && newPost.users_id > 0;
-    if (!isValid) return alert("need  caption!!!");
+    const isValid = newPost.users_id > 0 && newPost.status;
+    if (!isValid) return alert("need somethings");
+
+    if (images.length) {
+      const formData = new FormData();
+      formData.append("file", images[0]);
+      const response = await fetch(`${config.apiBaseUrl}/assets`, {
+        method: "POST",
+        body: formData,
+      });
+      if (response.ok) {
+        const result = await response.json();
+        newPost.photo_url = result.data;
+        console.log(newPost);
+      }
+    }
+
+    const isPerfect = newPost.photo_url?.length || newPost.caption.length > 0;
+    if (!isPerfect) return alert("need photo or captions");
     const response = await fetch(`${config.apiBaseUrl}/feed`, {
       method: "POST",
       headers: {
@@ -66,6 +105,7 @@ const Feed = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+      {/* createPost start */}
       <Paper elevation={2} sx={{ p: 3, borderRadius: 5 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Avatar
@@ -129,6 +169,7 @@ const Feed = () => {
           </BlueButton>
         </Box>
       </Paper>
+      {/* createPost end */}
 
       {posts.length > 0 &&
         posts.map((post) => {
@@ -243,11 +284,6 @@ const Feed = () => {
           );
         })}
 
-      {/* <BlueButton
-        onClick={() => accessToken && dispatch(fetchAppData(accessToken))}
-      >
-        fetchData
-      </BlueButton> */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -291,19 +327,39 @@ const Feed = () => {
           <DialogContentText id="alert-dialog-description">
             <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
               <Avatar src={owner?.asset_url} sx={{ width: 45, height: 45 }} />
-
               <Box>
-                <Typography>{owner?.name}</Typography>
-                <select name="status" id="status">
-                  <option value="public">
-                    <Box>
-                      <PublicIcon />
-                    </Box>
-                    <Typography>Public</Typography>
-                  </option>
-                  <option value="friends">Friends</option>
+                <Typography
+                  sx={{ color: mode === "dark" ? "#eeeff2" : "#4e5d78" }}
+                >
+                  {owner?.name}
+                </Typography>
+                <select
+                  name="status"
+                  value={newPost.status}
+                  id="status"
+                  onChange={(evt) => {
+                    evt.target.value === "public" &&
+                      setNewPost({ ...newPost, status: PostStatus.public });
+                    evt.target.value === "friends" &&
+                      setNewPost({ ...newPost, status: PostStatus.friends });
+                  }}
+                >
+                  <option value={PostStatus.public}>Public</option>
+                  <option value={PostStatus.friends}>Friends</option>
                 </select>
               </Box>
+            </Box>
+            <Box>
+              <FilePond
+                files={images}
+                onupdatefiles={(fileItems) => {
+                  // Set current file objects to this.state
+                  setImages(fileItems.map((fileItem) => fileItem.file));
+                }}
+                allowMultiple={true}
+                name="files"
+                labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+              />
             </Box>
           </DialogContentText>
         </DialogContent>
@@ -313,7 +369,14 @@ const Feed = () => {
             color: mode === "dark" ? "#eeeff2" : "#4e5d78",
           }}
         >
-          <BlueButton onClick={handleClose} color="success" fullWidth>
+          <BlueButton
+            onClick={() => {
+              createNewPost();
+              handleClose();
+            }}
+            color="success"
+            fullWidth
+          >
             Post
           </BlueButton>
         </DialogActions>

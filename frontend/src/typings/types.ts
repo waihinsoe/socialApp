@@ -12,6 +12,7 @@ export interface Post {
   caption: string;
   photo_url?: string;
   users_id: number;
+  status: PostStatus;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -62,7 +63,12 @@ export interface FriendRequest {
 }
 
 export enum FriendRequestStatus {
-  pending,
-  accepted,
-  rejected,
+  pending = "pending",
+  accepted = "accepted",
+  rejected = "rejected",
+}
+
+export enum PostStatus {
+  public = "public",
+  friends = "friends",
 }
