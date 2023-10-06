@@ -1,6 +1,7 @@
 import { useAppSelector } from "../../store/hook";
 import { BlueButton } from "../../utils/theme";
 import { appData } from "../../store/slice/appSlice";
+import moment from "moment";
 import {
   Avatar,
   Box,
@@ -174,6 +175,22 @@ const Feed = () => {
       {posts.length > 0 &&
         posts.map((post) => {
           const postOwner = users.find((user) => user.id === post.users_id);
+          const postTime = new Date(post.createdAt as Date);
+          const currentTime = new Date();
+          const timeDifference = moment(currentTime).diff(moment(postTime));
+          const displayPostTime = (timeDifference: number) => {
+            if (timeDifference < 60 * 1000) {
+              return "now";
+            } else if (timeDifference < 60 * 60 * 1000) {
+              return `${Math.floor(timeDifference / (60 * 1000))}m`;
+            } else if (timeDifference < 24 * 60 * 60 * 1000) {
+              return `${Math.floor(timeDifference / (60 * 60 * 1000))}h`;
+            } else if (timeDifference < 7 * 24 * 60 * 60 * 1000) {
+              return `${Math.floor(timeDifference / (24 * 60 * 60 * 1000))}d`;
+            } else {
+              return postTime.toLocaleDateString();
+            }
+          };
           return (
             <Paper
               elevation={2}
@@ -199,7 +216,7 @@ const Feed = () => {
                   />
                   <Box>
                     <Typography>{postOwner?.name}</Typography>
-                    <Typography>{post.caption}</Typography>
+                    <Typography>{displayPostTime(timeDifference)}</Typography>
                   </Box>
                 </Box>
                 <IconButton>
@@ -356,7 +373,6 @@ const Feed = () => {
                   // Set current file objects to this.state
                   setImages(fileItems.map((fileItem) => fileItem.file));
                 }}
-                allowMultiple={true}
                 name="files"
                 labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
               />
