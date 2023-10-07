@@ -8,7 +8,7 @@ import Settings from "../pages/settings";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import PrivateRoute from "./PrivateRoute";
-import Feed from "../pages/feed";
+import { Feed } from "../pages/feed";
 
 const Router = () => {
   return (
