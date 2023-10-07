@@ -1,51 +1,19 @@
 import { useAppSelector } from "../../store/hook";
 import { BlueButton } from "../../utils/theme";
 import { appData } from "../../store/slice/appSlice";
-import moment from "moment";
-import {
-  Avatar,
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  IconButton,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Button, Paper } from "@mui/material";
 import { ColorModeContext } from "../../contexts/ColorModeContext";
 import { useContext, useState } from "react";
 import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
 import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
 import SentimentSatisfiedOutlinedIcon from "@mui/icons-material/SentimentSatisfiedOutlined";
-import { Post, PostStatus } from "../../typings/types";
+import { Post, PostStatus, User } from "../../typings/types";
 import { config } from "../../config/config";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
-import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-
-// Import React FilePond
-import { FilePond, registerPlugin } from "react-filepond";
-
-// Import FilePond styles
-import "filepond/dist/filepond.min.css";
-
-// Import the Image EXIF Orientation and Image Preview plugins
-// Note: These need to be installed separately
-// `npm i filepond-plugin-image-preview filepond-plugin-image-exif-orientation --save`
-import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+import PostCard from "./PostCard";
 import { ActualFileObject } from "filepond";
+import PostDialog from "./PostDialog";
 
-// Register the plugins
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
-
-const Feed = () => {
+export const Feed = () => {
   const { mode } = useContext(ColorModeContext);
   const { owner, posts, users } = useAppSelector(appData);
   const accessToken = localStorage.getItem("accessToken");
@@ -57,17 +25,12 @@ const Feed = () => {
   });
 
   const [images, setImages] = useState<ActualFileObject[]>([]);
-  console.log(images);
-  console.log(newPost);
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
   const createNewPost = async () => {
     if (!owner) return;
     const isValid = newPost.users_id > 0 && newPost.status;
@@ -172,233 +135,18 @@ const Feed = () => {
       </Paper>
       {/* createPost end */}
 
-      {posts.length > 0 &&
-        posts.map((post) => {
-          const postOwner = users.find((user) => user.id === post.users_id);
-          const postTime = new Date(post.createdAt as Date);
-          const currentTime = new Date();
-          const timeDifference = moment(currentTime).diff(moment(postTime));
-          const displayPostTime = (timeDifference: number) => {
-            if (timeDifference < 60 * 1000) {
-              return "now";
-            } else if (timeDifference < 60 * 60 * 1000) {
-              return `${Math.floor(timeDifference / (60 * 1000))}m`;
-            } else if (timeDifference < 24 * 60 * 60 * 1000) {
-              return `${Math.floor(timeDifference / (60 * 60 * 1000))}h`;
-            } else if (timeDifference < 7 * 24 * 60 * 60 * 1000) {
-              return `${Math.floor(timeDifference / (24 * 60 * 60 * 1000))}d`;
-            } else {
-              return postTime.toLocaleDateString();
-            }
-          };
-          return (
-            <Paper
-              elevation={2}
-              sx={{
-                p: 3,
-                display: "flex",
-                flexDirection: "column",
-                gap: 3,
-                borderRadius: 5,
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-                  <Avatar
-                    src={postOwner?.asset_url}
-                    sx={{ width: 50, height: 50 }}
-                  />
-                  <Box>
-                    <Typography>{postOwner?.name}</Typography>
-                    <Typography>{displayPostTime(timeDifference)}</Typography>
-                  </Box>
-                </Box>
-                <IconButton>
-                  <MoreHorizIcon />
-                </IconButton>
-              </Box>
-              <Box
-                sx={{
-                  width: "100%",
-                }}
-              >
-                <img
-                  src={post.photo_url}
-                  style={{
-                    width: "100%",
-                    objectFit: "cover",
-                    borderRadius: "15px",
-                  }}
-                />
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Box sx={{ display: "flex" }}>
-                  {users.slice(12, users.length).map((user) => {
-                    return (
-                      <Avatar
-                        src={user.asset_url}
-                        sx={{ width: 30, height: 30, mr: -1 }}
-                      />
-                    );
-                  })}
-                </Box>
-                <Box sx={{ display: "flex", gap: 2 }}>
-                  <Typography>3 Comments</Typography>
-                  <Typography>17 shares</Typography>
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  borderTop: "1px solid",
-                  borderBottom: "1px solid",
-                  py: 1,
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  color: mode === "dark" ? "white" : "#4e5d78",
-                }}
-              >
-                <Button
-                  sx={{
-                    color: mode === "dark" ? "white" : "#4e5d78",
-                    textTransform: "capitalize",
-                  }}
-                  startIcon={<FavoriteBorderOutlinedIcon />}
-                >
-                  like
-                </Button>
-                <Button
-                  sx={{
-                    color: mode === "dark" ? "white" : "#4e5d78",
-                    textTransform: "capitalize",
-                  }}
-                  startIcon={<ChatBubbleOutlineRoundedIcon />}
-                >
-                  comments
-                </Button>
-                <Button
-                  sx={{
-                    color: mode === "dark" ? "white" : "#4e5d78",
-                    textTransform: "capitalize",
-                  }}
-                  startIcon={<ShareOutlinedIcon />}
-                >
-                  share
-                </Button>
-              </Box>
-            </Paper>
-          );
-        })}
+      {posts.length > 0 && <PostCard posts={posts} users={users} />}
 
-      <Dialog
+      <PostDialog
+        createNewPost={createNewPost}
+        images={images}
+        setImages={setImages}
+        newPost={newPost}
+        setNewPost={setNewPost}
         open={open}
-        onClose={handleClose}
-        sx={{
-          "& .MuiDialog-paper": {
-            borderRadius: "10px",
-            width: 500,
-          },
-        }}
-      >
-        <DialogTitle
-          id="alert-dialog-title"
-          sx={{
-            backgroundColor: mode === "dark" ? "#212833" : "#f9fafb",
-            color: mode === "dark" ? "#eeeff2" : "#4e5d78",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            variant="h5"
-            sx={{
-              flexGrow: 1,
-              textAlign: "center",
-              pl: 6,
-            }}
-          >
-            Create post
-          </Typography>
-          <IconButton onClick={handleClose}>
-            <CloseRoundedIcon sx={{ fontSize: 35 }} />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent
-          sx={{
-            backgroundColor: mode === "dark" ? "#212833" : "#f9fafb",
-            color: mode === "dark" ? "#eeeff2" : "#4e5d78",
-          }}
-        >
-          <DialogContentText id="alert-dialog-description">
-            <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-              <Avatar src={owner?.asset_url} sx={{ width: 45, height: 45 }} />
-              <Box>
-                <Typography
-                  sx={{ color: mode === "dark" ? "#eeeff2" : "#4e5d78" }}
-                >
-                  {owner?.name}
-                </Typography>
-                <select
-                  name="status"
-                  value={newPost.status}
-                  id="status"
-                  onChange={(evt) => {
-                    evt.target.value === "public" &&
-                      setNewPost({ ...newPost, status: PostStatus.public });
-                    evt.target.value === "friends" &&
-                      setNewPost({ ...newPost, status: PostStatus.friends });
-                  }}
-                >
-                  <option value={PostStatus.public}>Public</option>
-                  <option value={PostStatus.friends}>Friends</option>
-                </select>
-              </Box>
-            </Box>
-            <Box>
-              <FilePond
-                files={images}
-                onupdatefiles={(fileItems) => {
-                  // Set current file objects to this.state
-                  setImages(fileItems.map((fileItem) => fileItem.file));
-                }}
-                name="files"
-                labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
-              />
-            </Box>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions
-          sx={{
-            backgroundColor: mode === "dark" ? "#212833" : "#f9fafb",
-            color: mode === "dark" ? "#eeeff2" : "#4e5d78",
-          }}
-        >
-          <BlueButton
-            onClick={() => {
-              createNewPost();
-              handleClose();
-            }}
-            color="success"
-            fullWidth
-          >
-            Post
-          </BlueButton>
-        </DialogActions>
-      </Dialog>
+        setOpen={setOpen}
+        owner={owner as User}
+      />
     </Box>
   );
 };
-
-export default Feed;
