@@ -12,7 +12,7 @@ import {
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Post, PostStatus, User } from "../../typings/types";
 import { BlueButton } from "../../utils/theme";
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ColorModeContext } from "../../contexts/ColorModeContext";
 
 // Import React FilePond
@@ -48,10 +48,26 @@ const PostDialog = ({
   createNewPost,
 }: Props) => {
   const { mode } = useContext(ColorModeContext);
-
   const handleClose = () => {
     setOpen(false);
   };
+
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  // The value of the textarea
+
+  // This function is triggered when textarea changes
+  const textAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNewPost({ ...newPost, caption: event.target.value });
+  };
+
+  useEffect(() => {
+    if (textareaRef && textareaRef.current) {
+      textareaRef.current.style.height = "0px";
+      const scrollHeight = textareaRef.current.scrollHeight;
+      textareaRef.current.style.height = scrollHeight + "px";
+    }
+  }, [newPost.caption]);
   return (
     <Dialog
       open={open}
@@ -59,7 +75,6 @@ const PostDialog = ({
       sx={{
         "& .MuiDialog-paper": {
           borderRadius: "10px",
-          width: 500,
         },
       }}
     >
@@ -94,7 +109,6 @@ const PostDialog = ({
         }}
       >
         <DialogContentText
-          id="alert-dialog-description"
           sx={{ display: "flex", flexDirection: "column", gap: 2 }}
         >
           <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
@@ -122,6 +136,25 @@ const PostDialog = ({
             </Box>
           </Box>
           <Box>
+            <textarea
+              ref={textareaRef}
+              style={{
+                ...styles.textareaDefaultStyle,
+                backgroundColor: mode === "dark" ? "#212833" : "#f9fafb",
+                color: mode === "dark" ? "#eeeff2" : "#4e5d78",
+              }}
+              onChange={textAreaChange}
+              placeholder="What's on your mind, Wai?"
+            >
+              {newPost.caption}
+            </textarea>
+          </Box>
+          <Box
+            sx={{
+              width: 500,
+              margin: "0 auto",
+            }}
+          >
             <FilePond
               files={images}
               onupdatefiles={(fileItems) => {
@@ -155,3 +188,22 @@ const PostDialog = ({
 };
 
 export default PostDialog;
+
+const styles: { [name: string]: React.CSSProperties } = {
+  container: {
+    marginTop: 50,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  textareaDefaultStyle: {
+    padding: 5,
+    width: 500,
+    display: "block",
+    resize: "none",
+    backgroundColor: "",
+    outline: "none",
+    border: "none",
+    fontSize: "20px",
+  },
+};
